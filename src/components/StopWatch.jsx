@@ -1,68 +1,57 @@
-import {useRef, useState} from "react"
+import {useState, useRef} from "react"
 
 function StopWatch(){
-  const [timer, setTimer] = useState({
-    seconds : 0,
+  const [timer, setTimer]  = useState({
+    seconds : 0, 
     minutes : 0,
     hours : 0
   })
-  
- let timerRef = useRef(null)
- const handleStart  = () =>{
-   if(timerRef.current) return
-   timerRef.current = setInterval(()=>{
-      setTimer((prev)=>{
-         let {seconds , hours, minutes} = prev
-         seconds++
-         if(seconds === 60){
-          minutes++
-          seconds = 0
-         }else if(minutes === 60){
-          hours++
-          minutes = 0
-         }
-       return {hours, minutes, seconds}
-      }
-    
-    )
-   },1000)
- }
+  const style = {
+    border:"1px solid black", 
+    padding:"5px",
 
- const handleReset = () =>{
-  clearInterval(timerRef.current)
-   timerRef.current(null)
-   setTimer({seconds : 0, hours : 0, minutes : 0})
- }
-
-const handleStop = () =>{
-  clearInterval(timerRef.current)
-   timerRef.current(null)
-}
-const style = {
-    height : "150px",
-    width:"150px",
-    border:"1px solid black",
-    padding:"10px",
-    fontSize:"30px"
   }
-
+   const timerRef = useRef(null)
+  const handleStart  = () =>{
+     if(timerRef.current) return
+     timerRef.current = setInterval(() =>{
+           setTimer((prev)=>{
+            let {seconds, hours, minutes} = prev
+            seconds++
+            if(seconds === 60){
+              minutes++
+              seconds = 0
+            } if(minutes === 60){
+              hours++
+              minutes = 0
+            }
+            return {seconds, hours, minutes}
+           })
+     },500)
+  }
+const handleStop = () =>{
+   clearInterval(timerRef.current)
+   timerRef.current = null
+}
+const handleReset = () =>{
+  clearInterval(timerRef.current)
+  setTimer({seconds : 0, hours  : 0, minutes : 0})
+  timerRef.current  = null
+}
   return(
-   <>
-    <div>
-      <span style = {style}>{timer.hours < 10 ? `0${timer.hours}` : timer.hours}</span>
-      <span style = {style}>{timer.minutes < 10 ? `0${timer.minutes}` : timer.minutes}</span>
-      <span style = {style}>{timer.seconds < 10 ? `0${timer.seconds}` : timer.seconds}</span>
-    </div>
+    <>
+ <div style = {{display:"flex"}}>
+    <h1 style = {style}>{timer.hours}</h1>
+    <h1 style = {style}>{timer.minutes}</h1>
+    <h1 style = {style}>{timer.seconds}</h1>
+  </div>
+  <div>
     <button onClick = {handleStart}>Start</button>
     <button onClick = {handleStop}>Stop</button>
     <button onClick = {handleReset}>Reset</button>
-   </>
+  </div>
+    </>
+ 
   )
 }
 export default StopWatch
-
-
-
-
-
-

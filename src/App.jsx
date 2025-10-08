@@ -7,10 +7,10 @@ import Footer from "./components/Footer";
 import "./App.css"
 import { Outlet } from "react-router-dom";
 import {lazy , Suspense} from "react"
+import ErrorPage from "./utils/ErrorPage.jsx"
 import EcommerceContextProvider from "./utils/ecommerceContext.jsx"
-import store from "./utils/Store.jsx"
-import {Provider} from "react-redux"
-
+import store from "./utils/store.jsx" 
+import { Provider } from "react-redux";
 const DropDown = lazy(()=>import("./components/DropDown.jsx"))
 const ProgressBar = lazy(()=>import("./components/ProgressBar.jsx"))
 const SearchFilter = lazy(()=>import("./components/SearchFilter.jsx"))
@@ -30,18 +30,21 @@ const UsersList = lazy(()=>import("./components/UsersList.jsx"))
 const UsersData = lazy(()=>import("./components/usersData.jsx"))
 const SelectColours = lazy(()=>import("./components/SelectColours.jsx"))
 const TicTacToe = lazy(()=>import("./components/TicTacToe.jsx"))
+const Throttle  = lazy(()=> import("./components/Throttle.jsx"))
+const UseMemoExample  = lazy(()=> import("./components/UseMemoExample.jsx"))
 const EcommerceDetailPage = lazy(()=>import("./components/EcommerceDetailPage.jsx"))
 const Home = lazy(()=>import("./components/Home.jsx"))
 const PaginationWithUrl = lazy(()=>import("./components/PaginationWithUrl.jsx"))
 const EcommerceStore  = lazy(()=>import("./components/EcommerceStore.jsx"))
 const InfiniteScrollUrl  = lazy(()=> import("./components/InfiniteScrollUrl.jsx"))
 const CartPage = lazy(()=>import("./components/CartPage.jsx"))
+const ImageDownload = lazy(()=> import("./components/ImageDownload.jsx"))
 function AppLayout() {
   return (
     <>
     <EcommerceContextProvider>
-    <Provider store = {store}>
     <ScrollToTop/>
+    <Provider store= {store}>
       <Header />
       <Suspense fallback = {<div>Loading.....</div>}><Outlet /></Suspense>
       <Footer />
@@ -55,7 +58,8 @@ const appRouter = createBrowserRouter([
  
   {
     path: "/",
-    element: <AppLayout />, // 🔒 Protected Route Wrapper
+    element: <AppLayout />,
+   errorElement :<ErrorPage/>,  
     children: [
       
           { path: "", element: <Home /> },
@@ -82,7 +86,15 @@ const appRouter = createBrowserRouter([
           {path :"usersData", element : <UsersData/>},
           {path : "ecommerce", element : <EcommerceStore/>},
           {path:"cart", element : <CartPage/>},
-          {path : "ecommerceDetail/:id", element : <EcommerceDetailPage/>}
+          {path : "ecommerceDetail/:id", element : <EcommerceDetailPage/>},
+          {
+            path : "throttle", element : <Throttle/>
+          }
+          ,{
+            path : "useMemo" , element : <UseMemoExample/>
+          },{
+            path : "image", element : <ImageDownload/>
+          }
         ],
   
   },

@@ -1,20 +1,13 @@
-import ReactDOM from "react-dom"
-import "../App.css"
-
+import ReactDOM from "react-dom" 
 function Modal({children}){
-    return ReactDOM.createPortal(
-        <div className = "modal-overlay">
-            <div className = "modal-container">
-                {children}
-            </div>
-        </div>,
+ return ReactDOM.createPortal(
+    <div className = "modal-overlay">
+    <div className = "modal-container"> 
+     {children}
 
-        document.getElementById("modal-root")
-    )
+    </div>
+
+    </div>, document.getElementById("modal-root")
+ )
 }
-
-
 export default Modal
-
-
-

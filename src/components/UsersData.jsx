@@ -1,64 +1,69 @@
-import { useEffect} from "react"
-import {fetchUsers,updateUser,addUser,setUpdateKey, setFormData, deleteUser, resetForm} from "../utils/usersSlice.jsx"
+
 import {useSelector, useDispatch} from "react-redux"
+import {resetForm,setUpdatekey ,updateForm,addingUser,updateUser, deleteUser,fetchingUsers} from "../utils/userSlice.jsx"
+import {useEffect} from "react"
+import {Button} from "react-bootstrap"
+
 function UsersData(){
-   const {usersInfo, updateKey, formData} = useSelector(store => store.users)
-
-   const dispatch = useDispatch()
-   useEffect(()=>{
-     dispatch(fetchUsers())
-   },[])
-  const handleSubmit = (e) =>{
-    e.preventDefault()
-    if(updateKey){
-        dispatch(updateUser(formData))
-    }else{
- dispatch(addUser(formData))
-    }
-   
-dispatch(resetForm())
-dispatch(setUpdateKey(null))
-    
+  const {formData, usersInfo, updateKey} = useSelector(store => store.users)
+  const dispatch = useDispatch()
+  useEffect(()=>{
+   dispatch(fetchingUsers())
+  },[])
+  const handleChange = (e) =>{
+    dispatch(updateForm({[e.target.name] : e.target.value }))
   }
-
-  const handleChange = (e)=>{
-    dispatch(setFormData({...formData, [e.target.name] : e.target.value}))
-  }
-  const handleDelete = (user) =>{
-     dispatch(deleteUser(user))
-  }
-  const handleUpdate = (user) =>{
-    dispatch(setUpdateKey(user.id))
-    dispatch(setFormData({...formData, ...user}))
-  }
-return(
-    <>
-   <form onSubmit = {handleSubmit} style = {{border:"1px solid black", padding:"10px", maxWidth:"max-content",margin:"10px", display:"flex", flexDirection:"column" ,gap:"10px", alignItems:"flex-start"}}>
-    <input type = "text" placeholder = "Full Name" onChange = {handleChange} name = "name" value  ={formData.name} required/>
-    <input type = "email" placeholder = "Email" onChange = {handleChange} name = "email" value = {formData.email} required/>
-    <label><input type = "radio" value = "male" onChange = {handleChange} name = "gender" checked = {formData.gender === "male"}/>Male</label>
-   <label><input type = "radio" value = "female" onChange = {handleChange} name = "gender" checked = {formData.gender === "female"}/>Female</label>
-   <select value = {formData.status} name  = "status" onChange = {handleChange}>
-    <option value = "active">Active</option>
-    <option value = "inactive">Inactive</option>
-   </select>
-   <button>Submit</button>
-   </form>
+ const handleSubmit = (e) =>{
+e.preventDefault()
+if(updateKey){
+  dispatch(updateUser(formData))
+}else{
+dispatch(addingUser(formData))
+}
   
-    <div style = {{display:"flex", flexWrap:"wrap", gap:"10px"}}>
-        {usersInfo.map((user)=>{
-            return (
-                <div style ={{padding:"10px",border:"1px solid black"}}>
-                    <h1>{user.name}</h1>
-                    <p>{user.email} - {user.gender}</p>
-                    <p>{user.status}</p>
-                    <button onClick = {()=>handleUpdate(user)}>update</button>
-                    <button onClick = {()=>handleDelete(user)}>Delete</button>
-                </div>
-            )
-        })}
-    </div>
-      </>
+dispatch(resetForm())
+dispatch(setUpdatekey(null))
+ }
+const handleUpdate = (user)=>{
+  console.log(user)
+  dispatch(setUpdatekey(user.id))
+  dispatch(updateForm(user))
+}
+
+
+return(
+  <>
+
+ 
+<form style = {{display:"flex", flexDirection:"column",gap:"10px",alignItems:"start",padding:"5px",maxWidth:"max-content" ,border:"1px solid black"}}>
+  <input type  = "text" value = {formData.name} placeholder = "Enter you name" name = "name" onChange = {(e)=>handleChange(e)}/>
+  <input type  = "email" value = {formData.email} placeholder  = "Enter you email" name = "email" onChange = {(e)=>handleChange(e)}/>
+<label > <input type  ="radio" name = "gender" value = "male" onChange = {(e)=>handleChange(e)} checked = {formData.gender === "male"} />Male</label>
+<label><input type = "radio" name = "gender" value = "female" onChange = {(e)=>handleChange(e)} checked = {formData.gender === "female"}/>Female </label>
+<select name = "status" value = {formData.status} onChange = {(e)=>handleChange(e)}>
+  <option value = "active">Active</option>
+  <option value  = "inactive">Inactive</option>
+</select>
+<Button onClick = {(e)=>handleSubmit(e)}>{updateKey ? "Update" : "Submit"}</Button> 
+</form>
+<div style = {{display:"flex", gap:"10px", flexWrap:"wrap"}}>
+  {usersInfo.map((user)=>{
+    return (
+      <div key = {user.id} className = "border border-2 p-2">
+        <h3>{user.name} - {user.status}</h3>
+        <h5>{user.email} - {user.gender}</h5>
+        <Button variant = "secondary" className = "fw-bold" onClick = {()=>handleUpdate(user)}>Update</Button>
+        <Button variant = "danger" className  = "fw-bold ms-2" onClick = {()=>dispatch(deleteUser(user))}>Delete</Button>
+      </div>
+    )
+  })}
+</div>
+ </>
 )
 }
 export default UsersData
+
+
+
+
+

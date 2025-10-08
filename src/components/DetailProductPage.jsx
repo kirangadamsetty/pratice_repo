@@ -14,3 +14,17 @@ function DetailProductPage(){
     )
 }
 export default DetailProductPage
+
+
+
+
+
+
+
+
+
+
+
+
+
+

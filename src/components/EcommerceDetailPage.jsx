@@ -1,11 +1,9 @@
 import {Container, Row, Col} from "react-bootstrap"
 import {Card} from "react-bootstrap"
 import {useState,useEffect} from "react"
-import Modal from "./Modal"
 import {useParams} from "react-router-dom"
 function EcommerceDetailPage(){
     const [productData, setProductData] = useState([])
-    const [showModal, setShowModal] = useState(false)
    const {id} = useParams()
    const fetchingData = async() =>{
     try{
@@ -31,14 +29,8 @@ function EcommerceDetailPage(){
            {thumbnail ? <img src = {thumbnail} alt  = "product-image"/> : <span style = {{height:"100px", width:"100px", backgroundColor:"lightblue"}}></span>}
             <p>{description}</p>
             <h3>{price}</h3>
-            <button onClick = {()=>setShowModal(!showModal)}>Select Size</button>
-            {showModal && <Modal>
-                <div>
-                    {Array(5).fill("").map((_, i)=>{
-                        return <button>{i+1}</button>
-                    })}
-                </div>
-            </Modal>}
+            <button>Select Size</button>
+          
             </Card>
             </Col>
         </Row>

@@ -1,8 +1,7 @@
-import { useState } from "react"
-
+import {useState} from "react"
 function StateAndCapital(){
-    const [capital, setCapital]  = useState("")
-    const [state, setState] = useState("")
+    const [state, setState] = useState()
+    const [capital , setCapital] = useState()
     const data = {
         AndhraPradesh : "Amaravati", 
         Telangana : "Hyderabad",
@@ -10,47 +9,67 @@ function StateAndCapital(){
         Karnataka : "Bengaluru", 
         Kerala : "Thiruvananthapuram"
     }
- const handleStateChange = (e) =>{
-    let value = data[e.target.value]
-    setCapital(value)
-    setState(e.target.value)
- }
- const handleCapitalChange = (e) =>{
-    let value = e.target.value
-    for(let obj in data){
-        if(data[obj] === value){
-            setState(obj)
-            setCapital(value)
-            break
+    const handleStateChange = (e) =>{
+       setState(e.target.value)
+       setCapital(data[e.target.value])
+
+    }
+    const handleCapitalChange = (e) =>{
+        let value = e.target.value
+        setCapital(value)
+        for(let obj in data){
+            if(data[obj] === value){
+                setState(obj)
+            }
         }
     }
- }
-return(
-    <div>
-        <select value = {state} onChange = {handleStateChange}>
-        <option disabled value="">Select State</option>
-           {
-            Object.keys(data).map((value)=>{
-                return (
-                  
-                  <option value = {value}>{value}</option>
-                )
-            })
-           }
-          
-        </select>
-        <select value = {capital} onChange = {handleCapitalChange}>
-        <option disabled value=""> Select Capital</option>
-            {
-                Object.values(data).map((value)=>{
-                    return(
-                        <option value = {value}>{value}</option>
-                    )
-                })
-            }
-        </select>
-    </div>
-)
+    return(
+       <div>
+           <select value = {state} onChange = {handleStateChange}>
+            {Object.keys(data).map((item)=>{
+                return <option value = {item}>{item}</option>
+            })}
+           </select>
+           <select value = {capital} onChange = {handleCapitalChange}>
+            {Object.values(data).map((item)=>{
+                return <option value = {item}>{item}</option>
+            })}
+           </select>
+       </div>
+    )
 }
+
 export default StateAndCapital
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
